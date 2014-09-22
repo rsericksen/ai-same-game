@@ -4,7 +4,8 @@ public class Action extends jaima.search.SearchAction{
 
 	@Override
 	public String toString() {
-		return "blah";
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
