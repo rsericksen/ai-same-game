@@ -1,8 +1,10 @@
 package samegame;
 
-public class State extends jaima.search.State{
+public class BoardState extends jaima.search.State{
+	
+	
 
-	public State(String fromString) {
+	public BoardState(String fromString) {
 		super(fromString);
 		// TODO Auto-generated constructor stub
 	}
