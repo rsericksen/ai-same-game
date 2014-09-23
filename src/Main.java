@@ -14,6 +14,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		Problem problem = new Problem("ggbrrbbbg");
+		problem.setGoal("EEEEEEEEE");
 		Map<SearchAction, State> stateMap = problem.successors(problem.initial());
 		
 		BoardState state;
