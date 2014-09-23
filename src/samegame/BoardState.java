@@ -103,7 +103,7 @@ public class BoardState extends jaima.search.State {
 		}
 
 		for (ColorGroup group : groups) {
-			if (group.isGroup()) {
+			if (group.isGroup() && ! group.isEmpty()) {
 				Remove action = new Remove(this, group);
 				BoardState state = action.getTo();
 				moves.put(action, state);
@@ -159,6 +159,10 @@ public class BoardState extends jaima.search.State {
 
 		public boolean isGroup() {
 			return locations.size() > 1;
+		}
+		
+		public boolean isEmpty() {
+			return color == EMPTY;
 		}
 
 		public void merge(ColorGroup group) {

@@ -5,6 +5,31 @@ import jaima.search.State;
 
 import java.util.Map;
 
+/**
+ * 
+ * @author Stephen Bain and Ryan Ericksen
+ * 
+ * http://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/samegame.html
+ * 
+ * The problem inputs a String of letters which correspond to color blocks on the game board. 
+ * We'll say that the 'r' character represents red, the 'b' character blue, and the 'g' character green. 
+ * For example, the following game board
+ * 
+ * g g b
+ * r r b
+ * b b g
+ * 
+ * would be represented as "ggbrrbbbg"
+ * 
+ * GOAL STATE:
+ * 
+ * E E E
+ * E E E
+ * E E E
+ *
+ * represented as "EEEEEEEEE"
+ * 
+ */
 public class Problem extends jaima.search.Problem {
 
 	private BoardState board;
