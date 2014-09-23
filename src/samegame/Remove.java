@@ -1,13 +1,15 @@
 package samegame;
 
+import samegame.BoardState.ColorGroup;
+
 public class Remove extends jaima.search.SearchAction {
 
 	public final BoardState from;
-	public final BoardState to;
+	public ColorGroup group;
 
-	public Remove(BoardState from, BoardState to) {
+	public Remove(BoardState from, ColorGroup group) {
 		this.from = from;
-		this.to = to;
+		this.group = group;
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class Remove extends jaima.search.SearchAction {
 	}
 
 	public BoardState getTo() {
-		return to;
+		return from.remove(group);
 	}
 
 }
