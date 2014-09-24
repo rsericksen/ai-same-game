@@ -12,8 +12,8 @@ public class BoardState extends jaima.search.State {
 
 	public char[] colors;
 
-	private static final char EMPTY = 'E';
-	private static final char EDGE = 'I';
+	public static final char EMPTY = 'E';
+	public static final char EDGE = 'I';
 
 	/**
 	 * Board state represented as a grid of chars
@@ -55,8 +55,8 @@ public class BoardState extends jaima.search.State {
 	}
 
 	public boolean isEmpty() {
-		for (int color : colors) {
-			if (color != 0) {
+		for(char thisChar : colors){
+			if(thisChar != EMPTY){
 				return false;
 			}
 		}
@@ -111,40 +111,6 @@ public class BoardState extends jaima.search.State {
 		}
 
 		return moves;
-	}
-
-	public BoardState remove(ColorGroup group) {
-		BoardState newState = this.clone();
-
-		// replace array locations in group with empty character
-		for (int i = 0; i < group.locations.size(); i++) {
-			newState.colors[group.locations.get(i)] = EMPTY;
-		}
-
-		// if square is empty and square above it is not, swap the two
-		int row;
-		int column;
-		char up;
-		for (int j = 0; j < Math.sqrt(newState.colors.length); j++) {
-			for (int i = 0; i < newState.colors.length; i++) {
-				if (newState.colors[i] == EMPTY) {
-					row = newState.getRow(i);
-					column = newState.getColumn(i);
-
-					if (row > 0) {
-						up = newState.getColor(row - 1, column);
-						if (up != EMPTY && up != EDGE) {
-							int upLocation = newState.getLocation(row - 1,
-									column);
-							newState.colors[upLocation] = EMPTY;
-							newState.colors[i] = up;
-						}
-					}
-				}
-			}
-		}
-
-		return newState;
 	}
 
 	public class ColorGroup {
