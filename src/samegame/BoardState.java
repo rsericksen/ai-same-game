@@ -5,7 +5,6 @@ import jaima.search.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BoardState extends jaima.search.State {
@@ -55,8 +54,8 @@ public class BoardState extends jaima.search.State {
 	}
 
 	public boolean isEmpty() {
-		for(char thisChar : colors){
-			if(thisChar != EMPTY){
+		for (char thisChar : colors) {
+			if (thisChar != EMPTY) {
 				return false;
 			}
 		}
@@ -66,74 +65,32 @@ public class BoardState extends jaima.search.State {
 
 	public Map<SearchAction, State> successors() {
 		Map<SearchAction, State> moves = new HashMap<SearchAction, State>();
-
-		List<ColorGroup> groups = new ArrayList<ColorGroup>();
-
+		char color;
+		Remove remove;
+		BoardState newState;
 		for (int i = 0; i < colors.length; i++) {
-			groups.add(new ColorGroup(i));
-		}
-
-		ColorGroup thisGroup;
-		ColorGroup leftGroup;
-		ColorGroup upGroup;
-		int row;
-		int column;
-		for (int i = 0; i < groups.size(); i++) {
-			thisGroup = groups.get(i);
-
-			row = getRow(i);
-			column = getColumn(i);
-
-			// check if up exists
-			if (row > 0) {
-				upGroup = groups.get(getLocation(row - 1, column));
-				if (upGroup.color == thisGroup.color) {
-					upGroup.merge(thisGroup);
+			if(isClickable(i)){
+				remove = new Remove(this, i);
+				newState = remove.getTo();
+				
+				if(!moves.values().contains(newState)){
+					moves.put(remove, newState);
 				}
-			}
-
-			// check if left exists
-			if (column > 0) {
-				leftGroup = groups.get(getLocation(row, column - 1));
-				if (!leftGroup.locations.contains(thisGroup.locations.get(0))
-						&& leftGroup.color == thisGroup.color) {
-					leftGroup.merge(thisGroup);
-				}
-			}
-		}
-
-		for (ColorGroup group : groups) {
-			if (group.isGroup() && ! group.isEmpty()) {
-				Remove action = new Remove(this, group);
-				BoardState state = action.getTo();
-				moves.put(action, state);
 			}
 		}
 
 		return moves;
 	}
 
-	public class ColorGroup {
-		public List<Integer> locations;
-		public char color;
+	public boolean isClickable(int entry) {
+		char color = colors[entry];
+		int row = getRow(entry);
+		int column = getColumn(entry);
 
-		public ColorGroup(int initialLocation) {
-			locations = new ArrayList<Integer>();
-			locations.add(initialLocation);
-			color = colors[initialLocation];
-		}
-
-		public boolean isGroup() {
-			return locations.size() > 1;
-		}
-		
-		public boolean isEmpty() {
-			return color == EMPTY;
-		}
-
-		public void merge(ColorGroup group) {
-			locations.addAll(group.locations);
-		}
+		return color == EMPTY ? false : (row > 0 && getColor(row - 1, column) == color)
+				|| (row < Math.sqrt(colors.length) - 1 && getColor(row + 1, column) == color)
+				|| (column > 0 && getColor(row, column - 1) == color)
+				|| (column < Math.sqrt(colors.length) - 1 && getColor(row, column + 1) == color);
 	}
 
 	/**
@@ -166,6 +123,30 @@ public class BoardState extends jaima.search.State {
 	 */
 	public int getColumn(int n) {
 		return (int) (n % Math.sqrt(colors.length));
+	}
+
+	public boolean isColumnEmpty(int column) {
+		int row = 0;
+		char color;
+		while (row < Math.sqrt(colors.length)) {
+			color = getColor(row++, column);
+			if (color != EMPTY) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
+	public int numEmpty(){
+		int i = 0;
+		for(char color : colors){
+			if(color == EMPTY){
+				i++;
+			}
+		}
+		
+		return i;
 	}
 
 }

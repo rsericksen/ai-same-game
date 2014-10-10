@@ -1,13 +1,14 @@
-package samegame;
+package tests;
 
+import samegame.Problem;
 import jaima.search.Solver;
-import jaima.search.strategies.BreadthFS;
+import jaima.search.strategies.AStar;
 import jaima.search.strategies.DLS;
-import jaima.search.strategies.GraphSQ;
 import jaima.search.strategies.IDS;
 import jaima.search.strategies.Node;
-import jaima.search.strategies.SearchQueue;
 import jaima.search.strategies.Strategy;
+import jaima.search.strategies.TreeSQ;
+import jaima.search.strategies.UCost;
 import jaima.util.Metrics;
 import jaima.util.VirtualTimer;
 
@@ -21,7 +22,12 @@ public class Trivial extends junit.framework.TestCase {
         Node.reporting.add(Node.Reports.pretty);
         Metrics.clearAll();
         
-        problem = new Problem("bbbbbbbbb");
+        try {
+			problem = new Problem("bbbbbbbbb");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         VirtualTimer.startTimer();
 	}
@@ -31,9 +37,19 @@ public class Trivial extends junit.framework.TestCase {
         System.out.println(Metrics.getAll());
 	}
 	
-	public void testBFS(){
-        Strategy strategy = new DLS(6);
-        assertTrue(Solver.test(problem, strategy));
+	public void testAStarTreeSQ() {
+		Strategy strategy = new AStar(new TreeSQ());
+		assertTrue(Solver.test(problem, strategy));
+	}
+	
+	public void testUCost(){
+		Strategy strategy = new UCost(new TreeSQ());
+		assertTrue(Solver.test(problem, strategy));
+	}
+	
+	public void testIDS(){
+		Strategy strategy = new IDS();
+		assertTrue(Solver.test(problem, strategy));
 	}
 
 }

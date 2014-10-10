@@ -35,7 +35,13 @@ public class Problem extends jaima.search.Problem {
 	private BoardState board;
 	private BoardState goal;
 
-	public Problem(String start) {
+	public Problem(String start) throws Exception {
+		int length = start.length();
+		int root = (int) Math.sqrt(length);
+		if(!(root*root==length)){
+			throw new Exception("Not a square!");
+		}
+		
 		board = new BoardState(start);
 	}
 
@@ -69,6 +75,13 @@ public class Problem extends jaima.search.Problem {
 	@Override
 	public Map<SearchAction, State> successors(State state) {
 		return ((BoardState) state).successors();
+	}
+	
+	@Override
+	public double heuristic(State s) {
+		BoardState state = (BoardState) s;
+		return (state.colors.length - state.numEmpty()) / 2;
+		// admissible, since is assuming remaining color groups are of size 2.
 	}
 
 }
